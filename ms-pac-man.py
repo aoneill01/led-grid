@@ -11,13 +11,26 @@ draw = ImageDraw.Draw(im)
 
 def drawMsPacman(i):
     lookup = [6, 6, 4, 4, 5, 5, 4, 4]
-    x = LED_WIDTH - ((1 * i) % 150)
-    im.paste(getSprite(0, lookup[i % len(lookup)]), (x, 2))
+    t = i % 300
+    if t < 150:
+        x = LED_WIDTH - t
+        im.paste(getSprite(0, lookup[i % len(lookup)]), (x, 2))
+    else:
+        t -= 150
+        x = t - 16 - 16 * 4
+        im.paste(getSprite(1, lookup[i % len(lookup)]), (x, 2))
 
 def drawGhost(i, ghostNum):
-    lookup = [4, 4, 4, 4, 5, 5, 5, 5]
-    x = LED_WIDTH - ((1 * i) % 150) + 24 + 16 * ghostNum
-    im.paste(getSprite(4 + ghostNum, lookup[i % len(lookup)]), (x, 2))
+    t = i % 300
+    if t < 150:
+        lookup = [4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5]
+        x = LED_WIDTH - t + 32 + 16 * ghostNum
+        im.paste(getSprite(4 + ghostNum, lookup[i % len(lookup)]), (x, 2))
+    else:
+        lookup = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
+        t -= 150
+        x = t - 16 - 16 * ghostNum
+        im.paste(getSprite(8, lookup[i % len(lookup)]), (x, 2))
 
 i = 0
 while True:
@@ -29,4 +42,4 @@ while True:
     drawGhost(i, 3)
     drawFrame(im.load())
     i += 1
-    time.sleep(0.05)
+    time.sleep(0.03)

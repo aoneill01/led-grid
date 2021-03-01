@@ -2,12 +2,12 @@ import time
 from rpi_ws281x import PixelStrip, Color
 
 # LED strip configuration:
-LED_WIDTH = 24
+LED_WIDTH = 48
 LED_HEIGHT = 20
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA = 10          # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 16  # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 255  # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
@@ -38,5 +38,5 @@ if __name__ == '__main__':
         for x in range(LED_WIDTH):
             for y in range(LED_HEIGHT):
                 setPixel(strip, x, y, hsv_to_color((count + x + y) / 20, 1, 1))
-        count += 0.1
+        count += 0.3
         strip.show()
