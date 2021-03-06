@@ -1,0 +1,26 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>LED Matrix Configuration</title>
+</head>
+<body>
+  <ul>
+    <li><a href="#" class="mode-selection" data-mode="off">Off</a></li>
+    <li><a href="#" class="mode-selection" data-mode="mspacman">Ms. Pac-Man</a></li>
+    <li><a href="#" class="mode-selection" data-mode="rainbow">Rainbow</a></li>
+  </ul>
+
+  <script type="module">
+    const modeSelectors = document.querySelectorAll('.mode-selection') 
+    modeSelectors.forEach((modeSelector) => {
+      modeSelector.addEventListener('click', async (event) => {
+        event.preventDefault()
+	await fetch(`/set?mode=${event.target.dataset.mode}`, { method: 'POST' }) 
+      })
+    })
+  </script>
+</body>
+</html>
