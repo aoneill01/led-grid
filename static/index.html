@@ -11,6 +11,7 @@
     <li><a href="#" class="mode-selection" data-mode="off">Off</a></li>
     <li><a href="#" class="mode-selection" data-mode="mspacman">Ms. Pac-Man</a></li>
     <li><a href="#" class="mode-selection" data-mode="rainbow">Rainbow</a></li>
+    <li><a href="#" class="mode-selection" data-mode="text">Text</a> <input type="text" id="text"> <input type="color" id="color"></li>
   </ul>
 
   <script type="module">
@@ -18,7 +19,16 @@
     modeSelectors.forEach((modeSelector) => {
       modeSelector.addEventListener('click', async (event) => {
         event.preventDefault()
-	await fetch(`/set?mode=${event.target.dataset.mode}`, { method: 'POST' }) 
+	const params = new URLSearchParams({
+	  mode: event.target.dataset.mode
+	})
+
+	if (event.target.dataset.mode === 'text') {
+          params.append('args', document.getElementById('text').value)
+          params.append('args', document.getElementById('color').value)
+	}
+
+	await fetch(`/set?${params.toString()}`, { method: 'POST' }) 
       })
     })
   </script>

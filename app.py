@@ -3,6 +3,7 @@ from multiprocessing import Process, Queue
 from mspacman import ms_pacman
 from off import off
 from rainbow import rainbow
+from text import text
 
 app = Flask(__name__)
 queue = Queue()
@@ -10,9 +11,11 @@ queue = Queue()
 @app.route('/set', methods=['GET', 'POST'])
 def test():
     mode = request.args.get('mode')
+    args = request.args.getlist('args')
     if mode != None:
         queue.put('done')
         queue.put(mode)
+        for arg in args: queue.put(arg)
     return 'ok'
 
 def get_mode_function(id):
@@ -20,11 +23,11 @@ def get_mode_function(id):
         'mspacman': ms_pacman,
         'off': off,
         'rainbow': rainbow,
+        'text': text,
     }
     return mode_map[id]
 
 def mode_loop(shared_queue):
-    print('I am running in a different process!')
     while True:
         message = shared_queue.get()
         print(message)
