@@ -3,22 +3,86 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>LED Matrix Configuration</title>
+
+  <style>
+    body {
+      background-color: #eee;
+      color: #555;
+      font-family: sans-serif;
+    }
+    h2 {
+      margin: 0;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0);
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+      opacity: 0.75;
+      padding: 8px;
+      transition: box-shadow .5s, opacity .5s;
+    }
+    li>* {
+      margin-bottom: 8px;
+    }
+    li>*:last-child {
+      margin-bottom: 0;
+    }
+    li.selected {
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
+      opacity: 1;
+    }
+    button {
+      background-color: #eee;
+      border: 1px solid #999;
+      border-radius: 2px;
+      padding: 8px;
+    }
+    .text-args {
+      display: flex;
+    }
+    .text-args>* {
+      box-sizing: border-box;
+      height: 30px;
+    }
+    #text {
+      flex-grow: 1;
+      margin-right: 8px;
+    }
+  </style>
 </head>
 <body>
-  <ul>
-    <li><a href="#" class="mode-selection" data-mode="off">Off</a></li>
-    <li><a href="#" class="mode-selection" data-mode="mspacman">Ms. Pac-Man</a></li>
-    <li><a href="#" class="mode-selection" data-mode="rainbow">Rainbow</a></li>
-    <li><a href="#" class="mode-selection" data-mode="text">Text</a> <input type="text" id="text"> <input type="color" id="color"></li>
-  </ul>
+  <main>
+    <h1>Mode</h1>
+    <ul>
+      <li><h2>Off</h2><button class="mode-selection" data-mode="off">Select</button></li>
+      <li><h2>Ms. Pac-Man</h2><button class="mode-selection" data-mode="mspacman">Select</button></li>
+      <li><h2>Rainbow</h2><button class="mode-selection" data-mode="rainbow">Select</button></li>
+      <li><h2>Scrolling Text</h2><div class="text-args"><input type="text" id="text" placeholder="Text to scroll"><input type="color" id="color" value="#0011FF"></div><button class="mode-selection" data-mode="text">Select</button></li>
+    </ul>
+  </main>
 
   <script type="module">
     const modeSelectors = document.querySelectorAll('.mode-selection') 
     modeSelectors.forEach((modeSelector) => {
       modeSelector.addEventListener('click', async (event) => {
         event.preventDefault()
+        
+        const selectedLi =event.target.closest('li')
+        document.querySelectorAll('li').forEach((li) => {
+          li === selectedLi ? li.classList.add('selected') : li.classList.remove('selected')
+        })
+
 	const params = new URLSearchParams({
 	  mode: event.target.dataset.mode
 	})
