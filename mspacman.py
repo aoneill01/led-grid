@@ -1,19 +1,20 @@
-from grid import LED_WIDTH, LED_HEIGHT, drawFrame
+from grid import SCREEN_WIDTH, SCREEN_HEIGHT, drawFrame
 from PIL import Image, ImageDraw
 import time
+from os import path
 
-sprites = Image.open("sprites.png")
+sprites = Image.open(path.join(path.dirname(__file__), "sprites.png"))
 def get_sprite(row, col):
     return sprites.crop((col * 20 + 6, row * 20 + 6, col * 20 + 6 + 16, row * 20 + 6 + 16))
 
-im = Image.new("RGB", (LED_WIDTH, LED_HEIGHT))
+im = Image.new("RGB", (SCREEN_WIDTH, SCREEN_HEIGHT))
 draw = ImageDraw.Draw(im)
 
 def draw_ms_pacman(i):
     lookup = [6, 6, 4, 4, 5, 5, 4, 4]
     t = i % 300
     if t < 150:
-        x = LED_WIDTH - t
+        x = SCREEN_WIDTH - t
         im.paste(get_sprite(0, lookup[i % len(lookup)]), (x, 2))
     else:
         t -= 150
@@ -24,7 +25,7 @@ def draw_ghost(i, ghost_num):
     t = i % 300
     if t < 150:
         lookup = [4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5]
-        x = LED_WIDTH - t + 32 + 16 * ghost_num
+        x = SCREEN_WIDTH - t + 32 + 16 * ghost_num
         im.paste(get_sprite(4 + ghost_num, lookup[i % len(lookup)]), (x, 2))
     else:
         lookup = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
@@ -35,7 +36,7 @@ def draw_ghost(i, ghost_num):
 def ms_pacman(queue):
     i = 0
     while queue.empty():
-        draw.rectangle((0, 0, LED_WIDTH, LED_HEIGHT), fill=(0, 0, 0))
+        draw.rectangle((0, 0, SCREEN_WIDTH, SCREEN_HEIGHT), fill=(0, 0, 0))
         draw_ms_pacman(i)
         draw_ghost(i, 0)
         draw_ghost(i, 1)

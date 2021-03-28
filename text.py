@@ -1,5 +1,5 @@
 from PIL import Image, ImageDraw, ImageFont, ImageColor
-from grid import LED_WIDTH, LED_HEIGHT, drawFrame
+from grid import SCREEN_WIDTH, SCREEN_HEIGHT, drawFrame
 
 multiplier = 4
 fnt = ImageFont.truetype("Roboto-Thin.ttf", 70)
@@ -11,11 +11,11 @@ def text(queue):
     (width, height) = fnt.getsize(text)
      
     frames = []
-    for i in range(LED_WIDTH * multiplier + width):
-        im = Image.new("RGB", (LED_WIDTH * multiplier, LED_HEIGHT * multiplier))
+    for i in range(SCREEN_WIDTH * multiplier + width):
+        im = Image.new("RGB", (SCREEN_WIDTH * multiplier, SCREEN_HEIGHT * multiplier))
         draw = ImageDraw.Draw(im)
-        draw.text((LED_WIDTH * multiplier - i, 0), text, font=fnt, fill=fill)
-        im = im.resize((LED_WIDTH, LED_HEIGHT), Image.BICUBIC)
+        draw.text((SCREEN_WIDTH * multiplier - i, 0), text, font=fnt, fill=fill)
+        im = im.resize((SCREEN_WIDTH, SCREEN_HEIGHT), Image.BICUBIC)
         px = im.load()
         frames.append(px)
 
